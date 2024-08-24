@@ -3,15 +3,25 @@ import {
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
-  DeleteOutline
+  DeleteOutline,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme, InputBase, Button, Avatar } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Typography,
+  useTheme,
+  InputBase,
+  Button,
+  Avatar,
+} from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
+import { useNavigate } from "react-router-dom";
 
 const PostWidget = ({
   postId,
@@ -27,6 +37,7 @@ const PostWidget = ({
   const [isComments, setIsComments] = useState(false);
   const [newComment, setNewComment] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
@@ -128,8 +139,20 @@ const PostWidget = ({
       {isComments && (
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
-            <Box key={`${comment.userId}-${i}`} display="flex" alignItems="center" gap="0.5rem" mt="1rem">
-              <Avatar src={`http://localhost:3001/assets/${userPicturePath}`} />
+            <Box
+              key={`${comment.userId}-${i}`}
+              display="flex"
+              alignItems="center"
+              gap="0.5rem"
+              mt="1rem"
+            >
+              <Avatar
+                alt={`${comment.firstName} ${comment.lastName}`}
+                src={`http://localhost:3001/assets/${comments.userPicturePath
+}`}
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate(`/profile/${comment.userId}`)} // Navigates to the commenter's profile
+              />
               <Box flexGrow={1}>
                 <Typography sx={{ fontWeight: 500 }}>
                   {comment.firstName} {comment.lastName}
@@ -179,5 +202,3 @@ const PostWidget = ({
 };
 
 export default PostWidget;
-
-
