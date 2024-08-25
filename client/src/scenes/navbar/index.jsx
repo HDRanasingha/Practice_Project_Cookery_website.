@@ -27,6 +27,7 @@ import FlexBetween from "components/FlexBetween";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search input
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -40,6 +41,14 @@ const Navbar = () => {
   const alt = theme.palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      // Perform search logic here, e.g., navigate to a search results page
+      console.log("Searching for:", searchQuery);
+      navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -65,8 +74,12 @@ const Navbar = () => {
             gap="3rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search..." />
-            <IconButton>
+            <InputBase
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <IconButton onClick={handleSearch}>
               <Search />
             </IconButton>
           </FlexBetween>
