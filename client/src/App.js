@@ -11,6 +11,7 @@ import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import CoursesPage from "scenes/coursesPage";
 import FoodAndBeveragePage from "scenes/food-beveragesPage";
+import CartPage from "scenes/cartPage";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/courses" element={isAuth ? <CoursesPage /> : <Navigate to="/" />} />
           <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />} />
           <Route path="/food-beverages" element={<FoodAndBeveragePage /> } />
+          <Route path="/cart" element={<CartPage />} />
  
           </Routes>
         </ThemeProvider>

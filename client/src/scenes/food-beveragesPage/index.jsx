@@ -35,14 +35,14 @@ const FoodAndBeveragePage = () => {
 
   // Retrieve cart data from localStorage when the component mounts
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("cart"));
-    if (savedCart) {
-      setCart(savedCart);
-    }
+    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    console.log("Retrieved cart from localStorage:", savedCart); // Debugging log
+    setCart(savedCart); // Set the cart with items retrieved from localStorage
   }, []);
 
   // Update localStorage whenever the cart changes
   useEffect(() => {
+    console.log("Updating localStorage with cart:", cart); // Debugging log
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
@@ -85,9 +85,11 @@ const FoodAndBeveragePage = () => {
     return item ? item.quantity : 0;
   };
 
+  const cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
+
   return (
     <Box>
-      <Navbar />
+      <Navbar cartItemCount={cartItemCount} />
       <Box padding="2rem 6%">
         <Typography variant="h4" gutterBottom>
           Food and Beverages
@@ -130,22 +132,6 @@ const FoodAndBeveragePage = () => {
           ))}
         </FlexBetween>
 
-        {/* Cart Summary */}
-        <Box marginTop="2rem">
-          <Typography variant="h5">Cart ({cart.length} items)</Typography>
-          <Box marginTop="1rem">
-            {cart.map((item) => (
-              <Box key={item.id} display="flex" justifyContent="space-between" alignItems="center">
-                <Typography>{item.name}</Typography>
-                <Typography>
-                  {item.quantity} x ${item.price.toFixed(2)} = ${(item.quantity * item.price).toFixed(2)}
-                </Typography>
-              </Box>
-            ))}
-            {cart.length === 0 && <Typography>No items in the cart</Typography>}
-          </Box>
-        </Box>
-
         {/* Footer */}
         <Footer />
       </Box>
@@ -154,4 +140,3 @@ const FoodAndBeveragePage = () => {
 };
 
 export default FoodAndBeveragePage;
-
