@@ -10,6 +10,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import CoursesPage from "scenes/coursesPage";
+import FoodAndBeveragePage from "scenes/food-beveragesPage";
 
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
             <Route path="/home" element={isAuth ? <HomePage /> : <Navigate to="/" />} />
             <Route path="/courses" element={isAuth ? <CoursesPage /> : <Navigate to="/" />} />
           <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />} />
-          
+          <Route path="/food-beverages" element={<FoodAndBeveragePage /> } />
  
           </Routes>
         </ThemeProvider>

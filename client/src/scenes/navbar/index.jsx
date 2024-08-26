@@ -9,6 +9,7 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
+  Badge,
 } from "@mui/material";
 import {
   Search,
@@ -19,13 +20,14 @@ import {
   Help,
   Menu,
   Close,
+  ShoppingCart,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate, Link } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
-const Navbar = () => {
+const Navbar = ({ cartItemCount }) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
   const dispatch = useDispatch();
@@ -44,8 +46,6 @@ const Navbar = () => {
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      // Perform search logic here, e.g., navigate to a search results page
-      console.log("Searching for:", searchQuery);
       navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
     }
   };
@@ -65,7 +65,7 @@ const Navbar = () => {
             },
           }}
         >
-          Sociopedia
+          CookeryParadise
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween
@@ -99,6 +99,11 @@ const Navbar = () => {
           <Message sx={{ fontSize: "25px" }} />
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
+          <IconButton onClick={() => navigate("/cart")}>
+            <Badge badgeContent={cartItemCount} color="secondary">
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -185,6 +190,11 @@ const Navbar = () => {
             <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
+            <IconButton onClick={() => navigate("/cart")}>
+              <Badge badgeContent={cartItemCount} color="secondary">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}
