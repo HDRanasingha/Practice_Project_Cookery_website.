@@ -5,72 +5,63 @@ import {
   Grid,
   Card,
   CardContent,
+  CardMedia,
   Button,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
   Avatar,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import Footer from "scenes/footer";
 
 const RecipesPage = ({ cartItemCount }) => {
-  const [filter, setFilter] = useState("All");
   const [exploreCategory, setExploreCategory] = useState("All");
+  const navigate = useNavigate();
 
   // Sample data for recipes
   const recipes = [
     {
       id: 1,
-      name: "Spaghetti Carbonara",
-      category: "Italian",
-      difficulty: "Medium",
+      name: "Cheese Cakes",
+      category: "Cakes",
       description: "A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
-      imageUrl: "path-to-image1", // Replace with actual image path
+      imageUrl: "../assets/Recipes01.jpeg", // Replace with actual image path
     },
     {
       id: 2,
-      name: "Chicken Tikka Masala",
-      category: "Indian",
-      difficulty: "Medium",
+      name: "Fresh salad",
+      category: "Salads",
       description: "A flavorful Indian dish with grilled chicken in a creamy, spiced tomato sauce.",
-      imageUrl: "path-to-image2", // Replace with actual image path
+      imageUrl: "../assets/Recipies02.jpeg", // Replace with actual image path
     },
     {
       id: 3,
-      name: "Vegan Buddha Bowl",
-      category: "Vegan",
-      difficulty: "Easy",
+      name: "Mixed Berry Smoothie",
+      category: "Smoothies",
       description: "A healthy and colorful bowl with quinoa, avocado, chickpeas, and veggies.",
-      imageUrl: "path-to-image3", // Replace with actual image path
+      imageUrl: "../assets/Recipes03.jpeg", // Replace with actual image path
     },
-    // Add more recipes as needed
+    
   ];
 
   // Categories with images for the top menu
   const categories = [
-    { label: "All", imageUrl: "path-to-all-image" },
-    { label: "Salads", imageUrl: "path-to-salad-image" },
-    { label: "Cakes", imageUrl: "path-to-cake-image" },
-    { label: "Vegan", imageUrl: "path-to-vegan-image" },
-    // Add more categories as needed
+    { label: "All", imageUrl: "../assets/All.jpeg" },
+    { label: "Salads", imageUrl: "../assets/salad.jpeg" },
+    { label: "Cakes", imageUrl: "../assets/cake01.jpeg" },
+    { label: "Smoothies", imageUrl: "../assets/Smoothies.jpeg" },
   ];
 
-  // Filtered recipes based on explore category and filter option
+  // Filtered recipes based on explore category
   const filteredRecipes = recipes.filter((recipe) => {
-    return (
-      (exploreCategory === "All" || recipe.category === exploreCategory) &&
-      (filter === "All" || recipe.difficulty === filter)
-    );
+    return exploreCategory === "All" || recipe.category === exploreCategory;
   });
-
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-  };
 
   const handleExploreCategoryChange = (category) => {
     setExploreCategory(category);
+  };
+
+  const handleRecipeClick = (id) => {
+    navigate(`/recipes/${id}`);
   };
 
   return (
@@ -101,50 +92,51 @@ const RecipesPage = ({ cartItemCount }) => {
               <Avatar
                 src={category.imageUrl}
                 alt={category.label}
-                sx={{ width: 70, height: 70, margin: "auto", marginBottom: "0.5rem" }}
+                sx={{
+                  width: 70,
+                  height: 70,
+                  margin: "auto",
+                  marginBottom: "0.5rem",
+                  border: exploreCategory === category.label ? "2px solid blue" : "none",
+                }}
               />
               <Typography variant="subtitle1">{category.label}</Typography>
             </Box>
           ))}
         </Box>
 
-        {/* Filter by Difficulty */}
-        <Box display="flex" justifyContent="center" marginBottom="2rem">
-          <FormControl variant="outlined" sx={{ width: "45%" }}>
-            <InputLabel>Filter by Difficulty</InputLabel>
-            <Select value={filter} onChange={handleFilterChange} label="Filter by Difficulty">
-              <MenuItem value="All">All</MenuItem>
-              <MenuItem value="Easy">Easy</MenuItem>
-              <MenuItem value="Medium">Medium</MenuItem>
-              <MenuItem value="Hard">Hard</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-
         {/* Recipe Cards */}
-        <Grid container spacing={3}>
+        <Box display="flex" justifyContent="space-around" flexWrap="wrap" gap="2rem">
           {filteredRecipes.map((recipe) => (
-            <Grid item xs={12} sm={6} md={4} key={recipe.id}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" fontWeight="bold" marginBottom="1rem">
-                    {recipe.name}
-                  </Typography>
-                  <Typography variant="body1" marginBottom="1rem">
-                    {recipe.description}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => alert(`Viewing ${recipe.name}`)}
-                  >
-                    View Recipe
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
+            <Card
+              key={recipe.id}
+              sx={{ maxWidth: 300, cursor: "pointer" }}
+              onClick={() => handleRecipeClick(recipe.id)}
+            >
+              <CardMedia
+                component="img"
+                height="140"
+                image={recipe.imageUrl}
+                alt={recipe.name}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {recipe.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {recipe.description}
+                </Typography><Button
+                sx={{ margin: "1rem", backgroundColor: "primary.main" }}
+                variant="contained"
+                onClick={() => handleRecipeClick(recipe.id)}
+              >
+                View Recipe
+              </Button>
+              </CardContent>
+              
+            </Card>
           ))}
-        </Grid>
+        </Box>
       </Box>
 
       {/* Footer */}
@@ -154,3 +146,4 @@ const RecipesPage = ({ cartItemCount }) => {
 };
 
 export default RecipesPage;
+
