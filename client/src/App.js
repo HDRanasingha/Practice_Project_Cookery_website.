@@ -12,6 +12,8 @@ import { themeSettings } from "./theme";
 import CoursesPage from "scenes/coursesPage";
 import FoodAndBeveragePage from "scenes/food-beveragesPage";
 import CartPage from "scenes/cartPage";
+import RestaurantPage from "scenes/resturents";
+import RecipesPage from "scenes/recipes";
 
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
           <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />} />
           <Route path="/food-beverages" element={<FoodAndBeveragePage /> } />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/restaurants" element={< RestaurantPage/>} />
+          <Route path="/recipes" element={<RecipesPage/>} />
  
           </Routes>
         </ThemeProvider>

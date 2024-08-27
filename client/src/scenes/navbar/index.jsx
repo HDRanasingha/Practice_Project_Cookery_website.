@@ -134,6 +134,9 @@ const Navbar = ({ cartItemCount }) => {
               <MenuItem component={Link} to="/food-beverages">
                 Food & Beverages
               </MenuItem>
+              <MenuItem component={Link} to="/restaurants">
+                Restaurants
+              </MenuItem>
               <MenuItem onClick={() => dispatch(setLogout())}>
                 Log Out
               </MenuItem>
@@ -224,6 +227,9 @@ const Navbar = ({ cartItemCount }) => {
                 </MenuItem>
                 <MenuItem component={Link} to="/food-beverages">
                   Food & Beverages
+                </MenuItem>
+                <MenuItem component={Link} to="/restaurants">
+                  Restaurants
                 </MenuItem>
                 <MenuItem onClick={() => dispatch(setLogout())}>
                   Log Out
