@@ -5,7 +5,7 @@ import PostWidget from "./PostWidget";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts || []); // Ensure posts is an array
+  const posts = useSelector((state) => state.posts || []);
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
@@ -35,37 +35,24 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     } else {
       getPosts();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isProfile, userId, token, dispatch]);
 
   return (
     <>
-      {Array.isArray(posts) && posts.map(
-        ({
-          _id,
-          userId,
-          firstName,
-          lastName,
-          description,
-          location,
-          picturePath,
-          userPicturePath,
-          likes,
-          comments,
-        }) => (
-          <PostWidget
-            key={_id}
-            postId={_id}
-            postUserId={userId}
-            name={`${firstName} ${lastName}`}
-            description={description}
-            location={location}
-            picturePath={picturePath}
-            userPicturePath={userPicturePath}
-            likes={likes}
-            comments={comments}
-          />
-        )
-      )}
+      {Array.isArray(posts) && posts.map((post) => (
+        <PostWidget
+          key={post._id}
+          postId={post._id}
+          postUserId={post.userId}
+          name={`${post.firstName} ${post.lastName}`}
+          description={post.description}
+          location={post.location}
+          picturePath={post.picturePath}
+          userPicturePath={post.userPicturePath}
+          likes={post.likes}
+          comments={post.comments}
+        />
+      ))}
     </>
   );
 };

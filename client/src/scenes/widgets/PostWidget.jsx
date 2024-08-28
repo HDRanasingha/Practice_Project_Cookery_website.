@@ -140,7 +140,7 @@ const PostWidget = ({
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
             <Box
-              key={`${comment.userId}-${i}`}
+              key={comment._id}
               display="flex"
               alignItems="center"
               gap="0.5rem"
@@ -148,8 +148,7 @@ const PostWidget = ({
             >
               <Avatar
                 alt={`${comment.firstName} ${comment.lastName}`}
-                src={`http://localhost:3001/assets/${comments.userPicturePath
-}`}
+                src={`http://localhost:3001/assets/${comment.userPicturePath}`}
                 sx={{ cursor: "pointer" }}
                 onClick={() => navigate(`/profile/${comment.userId}`)} // Navigates to the commenter's profile
               />
