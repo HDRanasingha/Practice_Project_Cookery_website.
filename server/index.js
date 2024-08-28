@@ -12,6 +12,7 @@ import fs from 'fs';
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
+import restaurantRoutes from "./routes/restaurants.js"; // Add this line
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
@@ -23,6 +24,7 @@ import { users, posts } from "./data/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
+
 const app = express();
 app.use(express.json());
 app.use(helmet());
@@ -35,14 +37,14 @@ app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 /* FILE STORAGE */
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const dir = "public/assets";
-    if (!fs.existsSync(dir)){
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, "public/assets");
+    if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
     cb(null, dir);
   },
-  filename: function (req, file, cb) {
+  filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
 });
@@ -56,6 +58,7 @@ app.post("/posts", verifyToken, upload.single("picture"), createPost);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/restaurants", restaurantRoutes); // Add this line
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;
@@ -65,6 +68,7 @@ mongoose
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
 
     /* ADD DATA ONE TIME */
+    // Uncomment these lines to insert data only once
     // User.insertMany(users);
     // Post.insertMany(posts);
   })
