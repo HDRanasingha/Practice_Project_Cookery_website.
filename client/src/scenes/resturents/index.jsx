@@ -38,10 +38,21 @@ const RestaurantPage = () => {
     navigate(`/restaurants/${id}`);
   };
 
+  const handleAddRestaurantClick = () => {
+    navigate("/restaurants/add");
+  };
+
   return (
     <Box>
       {/* Navbar with search functionality */}
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
+      {/* Button to add a new restaurant */}
+      <Box display="flex" justifyContent="flex-start" p="2rem">
+        <Button variant="contained" color="primary" onClick={handleAddRestaurantClick}>
+          Add Restaurant
+        </Button>
+      </Box>
 
       {/* Main content with restaurants */}
       <Box display="flex" justifyContent="space-around" flexWrap="wrap" gap="2rem" p="2rem">
@@ -78,3 +89,4 @@ const RestaurantPage = () => {
 };
 
 export default RestaurantPage;
+

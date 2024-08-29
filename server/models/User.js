@@ -40,6 +40,19 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+const userSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  picturePath: String,
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  location: String,
+  occupation: String,
+  viewedProfile: Number,
+  impressions: Number
+}, { timestamps: true });
+
 
 const User = mongoose.model("User", UserSchema);
 export default User;

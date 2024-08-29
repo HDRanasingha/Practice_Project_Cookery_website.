@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AdminPage from './Admin/AdminPage';
+
 import AdminRestaurantPage from './Admin/AdminResturent';
+import AdminPanelPage from './Admin/AdminPanel';
  // Corrected path
 
 
@@ -11,7 +12,7 @@ function App() {
       <Routes>
      
         {/* Other routes */}
-        <Route path="/" element={<AdminPage />} />
+        <Route path="/" element={<AdminPanelPage />} />
         <Route path="/admin/restaurants" element={<AdminRestaurantPage />} />
        
    
