@@ -4,7 +4,7 @@ import {
   FavoriteOutlined,
   ShareOutlined,
   DeleteOutline,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 import {
   Box,
   Divider,
@@ -14,14 +14,14 @@ import {
   InputBase,
   Button,
   Avatar,
-} from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import Friend from "components/Friend";
-import WidgetWrapper from "components/WidgetWrapper";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "state";
-import { useNavigate } from "react-router-dom";
+} from '@mui/material';
+import FlexBetween from 'components/FlexBetween';
+import Friend from 'components/Friend';
+import WidgetWrapper from 'components/WidgetWrapper';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPost } from 'state';
+import { useNavigate } from 'react-router-dom';
 
 const PostWidget = ({
   postId,
@@ -35,7 +35,7 @@ const PostWidget = ({
   comments,
 }) => {
   const [isComments, setIsComments] = useState(false);
-  const [newComment, setNewComment] = useState("");
+  const [newComment, setNewComment] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
@@ -49,10 +49,10 @@ const PostWidget = ({
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ userId: loggedInUserId }),
     });
@@ -61,29 +61,30 @@ const PostWidget = ({
   };
 
   const handleCommentSubmit = async () => {
-    if (newComment.trim() === "") return;
+    if (newComment.trim() === '') return;
 
     const response = await fetch(`http://localhost:3001/posts/${postId}/comment`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ userId: loggedInUserId, comment: newComment }),
     });
 
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
-    setNewComment("");
+    setNewComment('');
   };
 
   const handleCommentDelete = async (commentId) => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/comment/${commentId}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ userId: loggedInUserId }),
     });
 
     const updatedPost = await response.json();
@@ -98,7 +99,7 @@ const PostWidget = ({
         subtitle={location}
         userPicturePath={userPicturePath}
       />
-      <Typography color={main} sx={{ mt: "1rem" }}>
+      <Typography color={main} sx={{ mt: '1rem' }}>
         {description}
       </Typography>
       {picturePath && (
@@ -106,7 +107,7 @@ const PostWidget = ({
           width="100%"
           height="auto"
           alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
+          style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
           src={`http://localhost:3001/assets/${picturePath}`}
         />
       )}
@@ -138,7 +139,7 @@ const PostWidget = ({
 
       {isComments && (
         <Box mt="0.5rem">
-          {comments.map((comment, i) => (
+          {comments.map((comment) => (
             <Box
               key={comment._id}
               display="flex"
@@ -149,14 +150,14 @@ const PostWidget = ({
               <Avatar
                 alt={`${comment.firstName} ${comment.lastName}`}
                 src={`http://localhost:3001/assets/${comment.userPicturePath}`}
-                sx={{ cursor: "pointer" }}
+                sx={{ cursor: 'pointer' }}
                 onClick={() => navigate(`/profile/${comment.userId}`)}
               />
               <Box flexGrow={1}>
                 <Typography sx={{ fontWeight: 500 }}>
                   {comment.firstName} {comment.lastName}
                 </Typography>
-                <Typography sx={{ color: main, mt: "0.25rem" }}>
+                <Typography sx={{ color: main, mt: '0.25rem' }}>
                   {comment.comment}
                 </Typography>
               </Box>
@@ -175,20 +176,20 @@ const PostWidget = ({
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               sx={{
-                width: "100%",
+                width: '100%',
                 backgroundColor: palette.neutral.light,
-                borderRadius: "1rem",
-                padding: "0.5rem 1rem",
+                borderRadius: '1rem',
+                padding: '0.5rem 1rem',
               }}
             />
             <Button
               onClick={handleCommentSubmit}
               disabled={!newComment.trim()}
               sx={{
-                mt: "0.5rem",
+                mt: '0.5rem',
                 color: palette.background.alt,
                 backgroundColor: palette.primary.main,
-                borderRadius: "3rem",
+                borderRadius: '3rem',
               }}
             >
               Post Comment

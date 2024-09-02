@@ -99,17 +99,35 @@ export const addComment = async (req, res) => {
 };
 
 
-/* DELETE COMMENT */
+
+
 export const deleteComment = async (req, res) => {
   try {
     const { id, commentId } = req.params;
+    const { userId } = req.body;
+
     const post = await Post.findById(id);
 
-    post.comments = post.comments.filter((comment) => comment._id.toString() !== commentId);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const comment = post.comments.id(commentId);
+
+    if (!comment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    if (comment.userId !== userId) {
+      return res.status(403).json({ message: 'You can only delete your own comments' });
+    }
+
+    post.comments = post.comments.filter(comment => comment._id.toString() !== commentId);
+
     const updatedPost = await Post.findByIdAndUpdate(id, { comments: post.comments }, { new: true });
 
     res.status(200).json(updatedPost);
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
