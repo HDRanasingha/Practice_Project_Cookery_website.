@@ -150,7 +150,7 @@ const PostWidget = ({
                 alt={`${comment.firstName} ${comment.lastName}`}
                 src={`http://localhost:3001/assets/${comment.userPicturePath}`}
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate(`/profile/${comment.userId}`)} // Navigates to the commenter's profile
+                onClick={() => navigate(`/profile/${comment.userId}`)}
               />
               <Box flexGrow={1}>
                 <Typography sx={{ fontWeight: 500 }}>
@@ -201,3 +201,4 @@ const PostWidget = ({
 };
 
 export default PostWidget;
+

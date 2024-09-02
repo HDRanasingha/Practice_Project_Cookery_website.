@@ -78,8 +78,18 @@ export const addComment = async (req, res) => {
     const { id } = req.params;
     const { userId, comment } = req.body;
 
+    const user = await User.findById(userId);
     const post = await Post.findById(id);
-    post.comments.push({ userId, comment, firstName: req.user.firstName, lastName: req.user.lastName, userPicturePath: req.user.picturePath });
+
+    const newComment = {
+      userId,
+      comment,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userPicturePath: user.picturePath,
+    };
+
+    post.comments.push(newComment);
     const updatedPost = await Post.findByIdAndUpdate(id, { comments: post.comments }, { new: true });
 
     res.status(200).json(updatedPost);
@@ -87,6 +97,7 @@ export const addComment = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
 
 /* DELETE COMMENT */
 export const deleteComment = async (req, res) => {
