@@ -22,6 +22,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPost } from 'state';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PostWidget = ({
   postId,
@@ -91,6 +93,26 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
+  const handleShare = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/posts/${postId}/share`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: loggedInUserId }),
+      });
+      if (!response.ok) throw new Error('Failed to share post');
+      const sharedPost = await response.json();
+      dispatch(setPost({ post: sharedPost }));
+      toast.success('Successfully shared!'); // Show toast message
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to share post');
+    }
+  };
+
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -132,7 +154,7 @@ const PostWidget = ({
           </FlexBetween>
         </FlexBetween>
 
-        <IconButton>
+        <IconButton onClick={handleShare}>
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
@@ -197,9 +219,9 @@ const PostWidget = ({
           </Box>
         </Box>
       )}
+      <ToastContainer />
     </WidgetWrapper>
   );
 };
 
 export default PostWidget;
-

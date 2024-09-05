@@ -101,6 +101,7 @@ export const addComment = async (req, res) => {
 
 
 
+
 export const deleteComment = async (req, res) => {
   try {
     const { id, commentId } = req.params;
@@ -127,6 +128,41 @@ export const deleteComment = async (req, res) => {
     const updatedPost = await Post.findByIdAndUpdate(id, { comments: post.comments }, { new: true });
 
     res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/* SHARE */
+export const sharePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    const originalPost = await Post.findById(id);
+
+    if (!originalPost) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Create a new post for sharing
+    const newSharedPost = new Post({
+      userId,
+      firstName: originalPost.firstName,
+      lastName: originalPost.lastName,
+      location: originalPost.location,
+      description: originalPost.description,
+      picturePath: originalPost.picturePath,
+      userPicturePath: originalPost.userPicturePath,
+      likes: {},
+      comments: [],
+      shared: true,
+      originalPostId: id
+    });
+
+    await newSharedPost.save();
+
+    res.status(201).json(newSharedPost);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
