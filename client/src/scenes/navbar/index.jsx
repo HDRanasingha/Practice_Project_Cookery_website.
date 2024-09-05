@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Box,
   IconButton,
-  InputBase,
   Typography,
   Select,
   MenuItem,
@@ -12,8 +11,6 @@ import {
   Badge,
 } from "@mui/material";
 import {
-  Search,
-  Message,
   DarkMode,
   LightMode,
   Notifications,
@@ -21,6 +18,7 @@ import {
   Menu,
   Close,
   ShoppingCart,
+  Message,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
@@ -29,7 +27,6 @@ import FlexBetween from "components/FlexBetween";
 
 const Navbar = ({ cartItemCount }) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -43,12 +40,6 @@ const Navbar = ({ cartItemCount }) => {
   const alt = theme.palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;
-
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
-    }
-  };
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -67,23 +58,6 @@ const Navbar = ({ cartItemCount }) => {
         >
           CookeryParadise
         </Typography>
-        {isNonMobileScreens && (
-          <FlexBetween
-            backgroundColor={neutralLight}
-            borderRadius="9px"
-            gap="3rem"
-            padding="0.1rem 1.5rem"
-          >
-            <InputBase
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <IconButton onClick={handleSearch}>
-              <Search />
-            </IconButton>
-          </FlexBetween>
-        )}
       </FlexBetween>
 
       {/* DESKTOP NAV */}
@@ -120,7 +94,7 @@ const Navbar = ({ cartItemCount }) => {
                   backgroundColor: neutralLight,
                 },
               }}
-              input={<InputBase />}
+              
             >
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
@@ -214,7 +188,7 @@ const Navbar = ({ cartItemCount }) => {
                     backgroundColor: neutralLight,
                   },
                 }}
-                input={<InputBase />}
+              
               >
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
