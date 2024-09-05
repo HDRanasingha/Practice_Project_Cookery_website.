@@ -111,6 +111,7 @@ const PostWidget = ({
       console.error(error);
       toast.error('Failed to share post');
     }
+    <ToastContainer />
   };
 
   return (
@@ -219,7 +220,7 @@ const PostWidget = ({
           </Box>
         </Box>
       )}
-      <ToastContainer />
+      
     </WidgetWrapper>
   );
 };
