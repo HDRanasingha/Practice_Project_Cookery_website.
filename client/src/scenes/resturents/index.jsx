@@ -1,33 +1,12 @@
-import React, { useState } from "react";
-import { Box, Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import Navbar from "scenes/navbar";
-import Footer from "scenes/footer";
+import React from 'react';
+import { Box, Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import Navbar from 'scenes/navbar';
+import Footer from 'scenes/footer';
 
-const restaurants = [
-  {
-    id: 1,
-    title: "Cook and Life",
-    description: "Learn the basics of React including components, hooks, and more.",
-    image: "../assets/20190405-PlantaQueen23.webp",
-  },
-  {
-    id: 2,
-    title: "Lara with Cake day",
-    description: "Deep dive into Node.js concepts, building APIs, and backend services.",
-    image: "../assets/resturent02.jpg",
-  },
-  {
-    id: 3,
-    title: "Cook and practice",
-    description: "Master JavaScript with advanced topics and best practices.",
-    image: "../assets/resturent03.jpg",
-  },
-];
-
-const RestaurantPage = () => {
+const RestaurantPage = ({ restaurants, addRestaurant }) => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   // Filter restaurants based on the search query
   const filteredRestaurants = restaurants.filter((restaurant) =>
@@ -39,18 +18,21 @@ const RestaurantPage = () => {
   };
 
   const handleAddRestaurantClick = () => {
-    navigate("/restaurants/add");
+    navigate("/admin/restaurants");
   };
 
   return (
     <Box>
-      {/* Navbar with search functionality */}
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       {/* Button to add a new restaurant */}
       <Box display="flex" justifyContent="flex-start" p="2rem">
-        <Button variant="contained" color="primary" onClick={handleAddRestaurantClick}>
-          Add Restaurant
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddRestaurantClick}
+        >
+          Add New Restaurant
         </Button>
       </Box>
 
@@ -82,7 +64,6 @@ const RestaurantPage = () => {
         ))}
       </Box>
 
-      {/* Footer */}
       <Footer />
     </Box>
   );

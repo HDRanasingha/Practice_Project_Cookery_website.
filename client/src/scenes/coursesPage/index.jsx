@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Box, Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography, Button, TextField, InputAdornment } from "@mui/material";
+import { Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import Footer from "scenes/footer";
@@ -40,35 +41,59 @@ const CoursesPage = () => {
 
   return (
     <Box>
-      {/* Navbar with search functionality */}
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      {/* Navbar */}
+      <Navbar />
+
+      {/* Search Section with Search Icon */}
+      <Box display="flex" justifyContent="center" alignItems="center" mt="2rem">
+        <TextField
+          label="Search Courses"
+          variant="outlined"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{ width: "50%" }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
 
       {/* Main content with courses */}
       <Box display="flex" justifyContent="space-around" flexWrap="wrap" gap="2rem" p="2rem">
-        {filteredCourses.map((course) => (
-          <Card
-            key={course.id}
-            sx={{ maxWidth: 300, cursor: "pointer" }}
-            onClick={() => handleCourseClick(course.id)}
-          >
-            <CardMedia component="img" height="140" image={course.image} alt={course.title} />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {course.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {course.description}
-              </Typography>
-            </CardContent>
-            <Button
-              sx={{ margin: "1rem", backgroundColor: "primary.main" }}
-              variant="contained"
+        {filteredCourses.length > 0 ? (
+          filteredCourses.map((course) => (
+            <Card
+              key={course.id}
+              sx={{ maxWidth: 300, cursor: "pointer" }}
               onClick={() => handleCourseClick(course.id)}
             >
-              View Course
-            </Button>
-          </Card>
-        ))}
+              <CardMedia component="img" height="140" image={course.image} alt={course.title} />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {course.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {course.description}
+                </Typography>
+              </CardContent>
+              <Button
+                sx={{ margin: "1rem", backgroundColor: "primary.main" }}
+                variant="contained"
+                onClick={() => handleCourseClick(course.id)}
+              >
+                View Course
+              </Button>
+            </Card>
+          ))
+        ) : (
+          <Typography variant="h6" color="text.secondary">
+            No courses found.
+          </Typography>
+        )}
       </Box>
 
       {/* Footer */}
@@ -78,3 +103,5 @@ const CoursesPage = () => {
 };
 
 export default CoursesPage;
+
+

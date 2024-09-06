@@ -13,9 +13,10 @@ import FoodAndBeveragePage from "scenes/food-beveragesPage";
 import CartPage from "scenes/cartPage";
 import RestaurantPage from "scenes/resturents";
 import RecipesPage from "scenes/recipes";
-import AddRestaurantPage from "scenes/resturents/add";
+
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import RestaurantDetailsPage from "scenes/resturentpageDetails";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -38,7 +39,8 @@ function App() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/restaurants" element={<RestaurantPage />} />
             <Route path="/recipes" element={<RecipesPage />} />
-            <Route path="/restaurants/add" element={<AddRestaurantPage />} />
+
+        <Route path="/restaurants/:id" element={<RestaurantDetailsPage/>} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
