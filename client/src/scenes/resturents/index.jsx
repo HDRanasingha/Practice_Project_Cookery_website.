@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Navbar from 'scenes/navbar';
 import Footer from 'scenes/footer';
 
-const RestaurantPage = ({ restaurants, addRestaurant }) => {
+const RestaurantPage = () => {
+  const [restaurants, setRestaurants] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = React.useState("");
 
-  // Filter restaurants based on the search query
-  const filteredRestaurants = restaurants.filter((restaurant) =>
+  useEffect(() => {
+    fetch('/api/restaurants')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => setRestaurants(data))
+      .catch(error => {
+        console.error('Error fetching restaurants:', error);
+        setError('Failed to fetch restaurants.');
+      });
+  }, []);
+
+  const filteredRestaurants = restaurants.filter(restaurant =>
     restaurant.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -17,32 +33,16 @@ const RestaurantPage = ({ restaurants, addRestaurant }) => {
     navigate(`/restaurants/${id}`);
   };
 
-  const handleAddRestaurantClick = () => {
-    navigate("/admin/restaurants");
-  };
-
   return (
     <Box>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-
-      {/* Button to add a new restaurant */}
-      <Box display="flex" justifyContent="flex-start" p="2rem">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddRestaurantClick}
-        >
-          Add New Restaurant
-        </Button>
-      </Box>
-
-      {/* Main content with restaurants */}
       <Box display="flex" justifyContent="space-around" flexWrap="wrap" gap="2rem" p="2rem">
+        {error && <Typography color="error">{error}</Typography>}
         {filteredRestaurants.map((restaurant) => (
           <Card
-            key={restaurant.id}
-            sx={{ maxWidth: 300, cursor: "pointer" }}
-            onClick={() => handleRestaurantClick(restaurant.id)}
+            key={restaurant._id}
+            sx={{ maxWidth: 300, cursor: 'pointer' }}
+            onClick={() => handleRestaurantClick(restaurant._id)}
           >
             <CardMedia component="img" height="140" image={restaurant.image} alt={restaurant.title} />
             <CardContent>
@@ -53,21 +53,17 @@ const RestaurantPage = ({ restaurants, addRestaurant }) => {
                 {restaurant.description}
               </Typography>
             </CardContent>
-            <Button
-              sx={{ margin: "1rem", backgroundColor: "primary.main" }}
-              variant="contained"
-              onClick={() => handleRestaurantClick(restaurant.id)}
-            >
-              View more
-            </Button>
           </Card>
         ))}
       </Box>
-
       <Footer />
     </Box>
   );
 };
 
 export default RestaurantPage;
+
+
+
+
 
